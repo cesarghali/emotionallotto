@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Emotional Lottery Selector</title>
+
+    <!-- Bootstrap -->
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+    <!-- CryptoJS library: https://code.google.com/p/crypto-js/ -->
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style> 
+    .ball
+      {
+      width:100px;
+      height:100px;
+      float: left;
+      border-radius:250px;
+      font-size:50px;
+      color:#fff;
+      line-height:100px;
+      text-align:center;
+      margin:5px;
+      color:#000
+      }
+
+    .white 
+      {
+      background:#CACDCB
+      }
+
+    .red
+      {
+      background:#D51A1A
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="text-center text-primary">Welcome to the Emotional Lottery!</h1>
+    <h2 class="text-center text-success">your string, your lotto</h2>
+
+    <form name="myForm" class="form-horizontal" action="javascript:generate();" method="post">
+      <div class="form-group">
+        <label for="input1" class="col-md-5 control-label text-success"> The thing closest to your heart!</label>
+        <div class="col-md-2">
+          <input type="password" class="form-control" id="input1" placeholder="The numbers you never could have" autofocus>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-5">
+        </div>
+        <div class="col-md-1 text-left">
+          <button type="submit" class="btn btn-danger">Generate</button>
+        </div>
+      </div>
+      <div class="col-md-5">
+      </div>
+    </form>
+
+    <div id="generated">
+      <div class="white ball" id="ball1"></div>
+      <div class="white ball" id="ball2"></div>
+      <div class="white ball" id="ball3"></div>
+      <div class="white ball" id="ball4"></div>
+      <div class="white ball" id="ball5"></div>
+      <div class="red ball" id="ball6"></div>
+    </div>
+
+
+    <script>
+    /**
+     * Generate a password upon form is submitted.
+     */
+    function generate() {
+      var input = $("#input1").val();
+      var hash = CryptoJS.SHA3(input, { outputLength:224 });
+    
+      var ball1 = ((hash.words[0] % 69) + 69) % 69;
+      var ball2 = (((hash.words[1] % 69) + (hash.words[6] % 69)) % 69 + 69) % 69;
+      var ball3 = (hash.words[2] % 69 + 69) % 69;
+      var ball4 = (hash.words[3] % 69 + 69) % 69;
+      var ball5 = (((hash.words[4] % 69) + (hash.words[7] % 69)) % 69 + 69) % 69;
+      var ball6 = (hash.words[5] % 26 + 26) % 26;
+
+      $("#ball1").html(ball1)
+      $("#ball2").html(ball2)
+      $("#ball3").html(ball3)
+      $("#ball4").html(ball4)
+      $("#ball5").html(ball5)
+      $("#ball6").html(ball6)
+    };
+    </script>
+  </body>
+</html>
