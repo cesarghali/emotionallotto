@@ -99,12 +99,12 @@
       var input = $("#input1").val();
       var hash = CryptoJS.SHA3(input, { outputLength:224 });
     
-      var ball1 = ((hash.words[0] % 69) + 69) % 69;
-      var ball2 = (((hash.words[1] % 69) + (hash.words[6] % 69)) % 69 + 69) % 69;
-      var ball3 = (hash.words[2] % 69 + 69) % 69;
-      var ball4 = (hash.words[3] % 69 + 69) % 69;
-      var ball5 = (((hash.words[4] % 69) + (hash.words[7] % 69)) % 69 + 69) % 69;
-      var ball6 = (hash.words[5] % 26 + 26) % 26;
+      var ball1 = ((hash.words[0] % 69) + 69) % 69 + 1;
+      var ball2 = (((hash.words[1] % 69) + (hash.words[6] % 69)) % 69 + 69) % 69 + 1;
+      var ball3 = (hash.words[2] % 69 + 69) % 69 + 1;
+      var ball4 = (hash.words[3] % 69 + 69) % 69 + 1;
+      var ball5 = (((hash.words[4] % 69) + (hash.words[7] % 69)) % 69 + 69) % 69 + 1;
+      var ball6 = (hash.words[5] % 26 + 26) % 26 + 1;
 
       $("#ball1").html(ball1)
       $("#ball2").html(ball2)
