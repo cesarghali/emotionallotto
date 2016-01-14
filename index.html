@@ -48,6 +48,11 @@
       color:#000
       }
 
+    .text
+      {
+      width:300px;
+      }
+
     .white 
       {
       background:#CACDCB
@@ -57,62 +62,104 @@
       {
       background:#D51A1A
       }
+
+    .error
+      {
+      color:#D51A1A;
+      font-size:40px;
+      display:none;
+      }
+
+    body
+      {
+      width:80%;
+      margin-left:auto;
+      margin-right:auto;
+      }
     </style>
   </head>
   <body>
-    <h1 class="text-center text-primary">Welcome to the Emotional Lottery!</h1>
-    <h2 class="text-center text-success">your string, your lotto</h2>
-
-    <form name="myForm" class="form-horizontal" action="javascript:generate();" method="post">
-      <div class="form-group">
-        <label for="input1" class="col-md-5 control-label text-success"> The thing closest to your heart!</label>
-        <div class="col-md-2">
-          <input type="password" class="form-control" id="input1" placeholder="The numbers you never could have" autofocus>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-md-5">
-        </div>
-        <div class="col-md-1 text-left">
-          <button type="submit" class="btn btn-danger">Generate</button>
-        </div>
-      </div>
-      <div class="col-md-5">
-      </div>
-    </form>
-
-    <div id="generated">
-      <div class="white ball" id="ball1"></div>
-      <div class="white ball" id="ball2"></div>
-      <div class="white ball" id="ball3"></div>
-      <div class="white ball" id="ball4"></div>
-      <div class="white ball" id="ball5"></div>
-      <div class="red ball" id="ball6"></div>
-    </div>
-
+    <table>
+      <tr>
+	<td>
+	  <h1 class="text-center text-primary">Welcome to the Emotional Lottery!</h1>
+	  <h2 class="text-center text-success">your string, your lotto</h2>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <form name="myForm" class="form-horizontal" action="javascript:generate();" method="post">
+	    <div class="form-group">
+              <label for="input1" class="col-md-5 control-label text-success"> The thing closest to your heart!</label>
+              <div class="col-md-2 text">
+		<input type="password" class="form-control" id="input1" placeholder="The numbers you never could have" autofocus>
+              </div>
+	    </div>
+	    <div class="form-group">
+              <div class="col-md-5">
+              </div>
+              <div class="col-md-1 text-left">
+		<button type="submit" class="btn btn-danger">Generate</button>
+              </div>
+	    </div>
+	    <div class="col-md-5">
+	    </div>
+	  </form>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <div id="generated">
+	    <div class="white ball" id="ball1"></div>
+	    <div class="white ball" id="ball2"></div>
+	    <div class="white ball" id="ball3"></div>
+	    <div class="white ball" id="ball4"></div>
+	    <div class="white ball" id="ball5"></div>
+	    <div class="red ball" id="ball6"></div>
+	  </div>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <div class="error" id="errmsg">Not a valid lotto ticket</div>
+	</td>
+      </tr>
+    </table>
 
     <script>
     /**
      * Generate a password upon form is submitted.
      */
     function generate() {
+      $("#errmsg").hide();
+
       var input = $("#input1").val();
       var hash = CryptoJS.SHA3(input, { outputLength:224 });
     
-      var ball1 = ((hash.words[0] % 69) + 69) % 69 + 1;
-      var ball2 = (((hash.words[1] % 69) + (hash.words[6] % 69)) % 69 + 69) % 69 + 1;
-      var ball3 = (hash.words[2] % 69 + 69) % 69 + 1;
-      var ball4 = (hash.words[3] % 69 + 69) % 69 + 1;
-      var ball5 = (((hash.words[4] % 69) + (hash.words[7] % 69)) % 69 + 69) % 69 + 1;
-      var ball6 = (hash.words[5] % 26 + 26) % 26 + 1;
+      var balls = new Array(5);
+      balls[0] = ((hash.words[0] % 69) + 69) % 69 + 1;
+      balls[1] = (((hash.words[1] % 69) + (hash.words[6] % 69)) % 69 + 69) % 69 + 1;
+      balls[2] = (hash.words[2] % 69 + 69) % 69 + 1;
+      balls[3] = (hash.words[3] % 69 + 69) % 69 + 1;
+      balls[4] = (((hash.words[4] % 69) + (hash.words[7] % 69)) % 69 + 69) % 69 + 1;
+      var powerball = (hash.words[5] % 26 + 26) % 26 + 1;
 
-      $("#ball1").html(ball1)
-      $("#ball2").html(ball2)
-      $("#ball3").html(ball3)
-      $("#ball4").html(ball4)
-      $("#ball5").html(ball5)
-      $("#ball6").html(ball6)
+      $("#ball1").html(balls[0])
+      $("#ball2").html(balls[1])
+      $("#ball3").html(balls[2])
+      $("#ball4").html(balls[3])
+      $("#ball5").html(balls[4])
+      $("#ball6").html(powerball)
+
+      if (hasDuplicates(balls))
+      {
+        $("#errmsg").show();
+      }
     };
+
+    function hasDuplicates(array) {
+      return (new Set(array)).size !== array.length;
+    }
     </script>
   </body>
 </html>
